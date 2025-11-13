@@ -1,4 +1,4 @@
-  services:
+services:
     - type: web
       name: agentgatepay-tx-signer
       env: node
@@ -8,5 +8,4 @@
       startCommand: cd tx-signing-service && npm start
       envVars:
         - key: PRIVATE_KEY
-          generateValue: false
-          description: "Your wallet private key (starts with 0x)"
+          sync: false
