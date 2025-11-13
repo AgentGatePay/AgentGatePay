@@ -8,4 +8,5 @@
       startCommand: cd tx-signing-service && npm start
       envVars:
         - key: PRIVATE_KEY
-          sync: false
+          generateValue: false
+          description: "Your wallet private key (starts with 0x)"
