@@ -235,14 +235,11 @@ async function fetchCommissionConfig(apiKey) {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-    const wallet = new ethers.Wallet(WALLET_PRIVATE_KEY);
-
     res.json({
         status: 'healthy',
         service: 'AgentGatePay Signing Service',
         version: '4.0.0',
         mode: 'secure_server_fetched_config',
-        wallet_address: wallet.address,
         supported_chains: Object.keys(RPCS),
         supported_tokens: Object.keys(TOKENS),
         owner_protection: AGENTGATEPAY_API_KEY ? 'enabled' : 'disabled',
