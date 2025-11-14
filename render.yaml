@@ -1,0 +1,45 @@
+# Render Blueprint for AgentGatePay Transaction Signing Service v4.0
+#
+# This service signs transactions for AgentGatePay with mandatory commission enforcement.
+# Commission config is fetched from AgentGatePay (server-controlled, not client-controlled).
+#
+# 🚀 ONE-CLICK DEPLOY:
+# Click the "Deploy to Render" button and you'll be prompted to enter 2 values:
+# 1. Your AgentGatePay API Key (pk_live_...)
+# 2. Your Wallet Private Key (0x...)
+#
+# SECURITY FEATURES:
+# - Owner API key verification (only specific user can access)
+# - Commission config fetched from AgentGatePay API (hardcoded URL)
+# - Client CANNOT bypass commission enforcement
+#
+# NOTE: After deployment, you can optionally move these to Secret Files for extra security
+
+services:
+  - type: web
+    name: agentgatepay-tx-signer
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+
+    # 🔒 ENVIRONMENT VARIABLES (You'll be prompted during one-click deploy)
+    envVars:
+      # 1. AgentGatePay API Key
+      # Get from: https://api.agentgatepay.com/v1/users/signup
+      # Format: pk_live_abc123def456...
+      - key: AGENTGATEPAY_API_KEY
+        sync: false
+
+      # 2. Wallet Private Key
+      # Your wallet private key for signing transactions
+      # Format: 0x followed by 64 hex characters (66 total)
+      - key: WALLET_PRIVATE_KEY
+        sync: false
+
+    # Health check
+    healthCheckPath: /health
+
+    # Auto-deploy on push
+    autoDeploy: true
