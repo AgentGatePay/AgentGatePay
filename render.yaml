@@ -18,22 +18,10 @@ services:
   - type: web
     name: agentgatepay-tx-signer
     env: node
-    region: oregon  # or any other region
+    region: frankfurt  # or any other region
     plan: free      # Free tier available
     buildCommand: npm install
     startCommand: node index.js
-
-    # Environment Variables (optional RPC endpoints)
-    envVars:
-      # Optional: Custom RPC endpoints (defaults provided)
-      - key: BASE_RPC
-        value: https://mainnet.base.org
-      - key: ETHEREUM_RPC
-        value: https://cloudflare-eth.com
-      - key: POLYGON_RPC
-        value: https://polygon-rpc.com
-      - key: ARBITRUM_RPC
-        value: https://arb1.arbitrum.io/rpc
 
     # 🔒 SECRET FILES (Set during one-click deploy!)
     # Both secrets are stored as Secret Files for maximum security
