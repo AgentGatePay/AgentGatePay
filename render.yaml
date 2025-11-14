@@ -21,6 +21,7 @@ services:
     env: node
     region: oregon
     plan: free
+    rootDir: tx-signing-service
     buildCommand: npm install
     startCommand: node index.js
 
