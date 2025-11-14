@@ -374,9 +374,20 @@ app.post('/sign-payment', async (req, res) => {
         const erc20Abi = ['function transfer(address to, uint256 amount) returns (bool)'];
         const contract = new ethers.Contract(tokenAddress, erc20Abi, wallet);
 
+        // Get current nonce and gas price
+        const currentNonce = await wallet.getNonce();
+        const feeData = await provider.getFeeData();
+
+        console.log(`  Nonce: ${currentNonce}`);
+        console.log(`  Gas Price: ${ethers.formatUnits(feeData.gasPrice, 'gwei')} Gwei`);
+
         // 8. 🔐 TRANSACTION 1: Commission (to AgentGatePay)
         console.log(`\n  🔐 TRANSACTION 1: Commission Transfer`);
-        const tx1 = await contract.transfer(commissionConfig.address, commissionAmount);
+        const tx1 = await contract.transfer(commissionConfig.address, commissionAmount, {
+            nonce: currentNonce,
+            maxFeePerGas: feeData.maxFeePerGas,
+            maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
+        });
         console.log(`     TX Hash: ${tx1.hash}`);
 
         // Wait for confirmation
@@ -388,9 +399,13 @@ app.post('/sign-payment', async (req, res) => {
             throw new Error('Commission transaction failed on-chain');
         }
 
-        // 9. 🔐 TRANSACTION 2: Merchant Payment
+        // 9. 🔐 TRANSACTION 2: Merchant Payment (with incremented nonce)
         console.log(`\n  🔐 TRANSACTION 2: Merchant Transfer`);
-        const tx2 = await contract.transfer(merchant_address, merchantAmount);
+        const tx2 = await contract.transfer(merchant_address, merchantAmount, {
+            nonce: currentNonce + 1,
+            maxFeePerGas: feeData.maxFeePerGas,
+            maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
+        });
         console.log(`     TX Hash: ${tx2.hash}`);
 
         // Wait for confirmation
