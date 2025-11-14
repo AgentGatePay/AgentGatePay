@@ -242,9 +242,7 @@ app.get('/health', (req, res) => {
         mode: 'secure_server_fetched_config',
         supported_chains: Object.keys(RPCS),
         supported_tokens: Object.keys(TOKENS),
-        owner_protection: AGENTGATEPAY_API_KEY ? 'enabled' : 'disabled',
-        commission_config: 'fetched_from_agentgatepay',
-        note: 'Commission config is fetched from AgentGatePay. Client cannot modify.'
+        owner_protection: AGENTGATEPAY_API_KEY ? 'enabled' : 'disabled'
     });
 });
 
