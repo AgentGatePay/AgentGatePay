@@ -7,5 +7,7 @@ services:
       buildCommand: cd tx-signing-service && npm install
       startCommand: cd tx-signing-service && npm start
       envVars:
-        - key: PRIVATE_KEY
+        - key: OWNER_API_KEY
+          sync: false
+        - key: GATEWAY_PRIVATE_KEY
           sync: false
